@@ -8,5 +8,6 @@ import com.betacom.pv.dto.output.SospensioneDTO;
 public interface ITipoSospensioneService {
 	void create(SospensioneReq req) throws Exception;
 	List<SospensioneDTO> getAll() throws Exception;
+	void delete(String sosp) throws Exception;
 
 }

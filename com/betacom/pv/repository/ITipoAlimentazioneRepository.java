@@ -11,4 +11,6 @@ public interface ITipoAlimentazioneRepository extends JpaRepository<TipoAlimenta
 
 	Optional<TipoAlimentazione> findByDescrizioneAndTipoVeicolo_Tipo(String descrizione, String tipoVeicolo);
 
+	boolean existsByTipoVeicolo_Tipo(String tipo);
+
 }

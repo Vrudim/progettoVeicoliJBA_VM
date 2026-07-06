@@ -14,6 +14,7 @@ import com.betacom.pv.models.*;
 import com.betacom.pv.repository.*;
 import com.betacom.pv.utils.Validazione;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +27,7 @@ public class BiciImpl implements IBiciService {
     private final IVeicoloRepository veicR;
     private final Validazione valida;
 
+    @Transactional
     @Override
     public void create(BiciReq req) {
 
@@ -33,7 +35,7 @@ public class BiciImpl implements IBiciService {
         valida.validaAnno(req.getAnnoProduzione());
         valida.validaNrMarce(req.getNumeroMarce());
 
-        TipoVeicolo tipo = valida.validaTipoVeicolo(req.getTipoVeicolo());
+        TipoVeicolo tipo = valida.validaTipoVeicolo("bici");
         TipoAlimentazione alim = valida.validaAlimentazione(req.getAlimentazione(), tipo.getTipo());
         CategoriaVeicolo cat = valida.validaCategoria(req.getCategoria(), tipo.getTipo());
 
@@ -60,6 +62,7 @@ public class BiciImpl implements IBiciService {
     }
 
     @Override
+    @Transactional
     public void update(BiciReq req) {
 
         Bici b = biciR.findById(req.getId())
@@ -76,12 +79,10 @@ public class BiciImpl implements IBiciService {
                 .ifPresent(t -> v.setTipoVeicolo(valida.validaTipoVeicolo(t)));
 
         Optional.ofNullable(req.getAlimentazione())
-                .ifPresent(a -> v.setAlimentazione(valida.validaAlimentazione(a, v.getTipoVeicolo().getTipo())
-                ));
+                .ifPresent(a -> v.setAlimentazione(valida.validaAlimentazione(a, v.getTipoVeicolo().getTipo())));
 
         Optional.ofNullable(req.getCategoria())
-                .ifPresent(c -> v.setCategoria(valida.validaCategoria(c, v.getTipoVeicolo().getTipo())
-                ));
+                .ifPresent(c -> v.setCategoria(valida.validaCategoria(c, v.getTipoVeicolo().getTipo())));
 
         veicR.save(v);
 
@@ -99,6 +100,7 @@ public class BiciImpl implements IBiciService {
     }
     
     @Override
+    @Transactional
     public void delete(Integer id) {
 
         Bici b = biciR.findById(id)

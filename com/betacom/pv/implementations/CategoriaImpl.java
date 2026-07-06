@@ -6,13 +6,16 @@ import org.springframework.stereotype.Service;
 
 import com.betacom.pv.dto.input.CategoriaVeicoliReq;
 import com.betacom.pv.dto.output.CategoriaVeicoliDTO;
+import com.betacom.pv.exceptions.AcademyException;
 import com.betacom.pv.interfaces.ICategoriaService;
+import com.betacom.pv.interfaces.IMessaggiServices;
 import com.betacom.pv.mapping.CategoriaMapper;
 import com.betacom.pv.models.CategoriaVeicolo;
 import com.betacom.pv.models.TipoVeicolo;
 import com.betacom.pv.repository.ICategoriaVeicoloRepository;
 import com.betacom.pv.utils.Validazione;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,8 +26,10 @@ public class CategoriaImpl implements ICategoriaService{
 
 	private final ICategoriaVeicoloRepository catR;
     private final Validazione valida;
+    private final IMessaggiServices msgS;
     
 	@Override
+	@Transactional
 	public void create(CategoriaVeicoliReq req) throws Exception {
 		TipoVeicolo tipo = valida.validaTipoVeicolo(req.getTipo());
 		CategoriaVeicolo a = new CategoriaVeicolo();
@@ -42,5 +47,12 @@ public class CategoriaImpl implements ICategoriaService{
                 .toList();
 	}
 
-
+	@Override
+    @Transactional
+    public void delete(Integer id) {
+		CategoriaVeicolo cat = catR.findById(id)
+                .orElseThrow(() -> new AcademyException(msgS.get("cat.no.present")));
+		valida.checkCat(cat);
+		catR.delete(cat);
+    }
 }

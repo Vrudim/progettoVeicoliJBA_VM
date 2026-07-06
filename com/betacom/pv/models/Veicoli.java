@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,4 +57,11 @@ public class Veicoli {
         nullable = false
     )
     private CategoriaVeicolo categoria;
+    
+    @OneToOne (mappedBy = "veicoli")
+    private Bici bici;
+    @OneToOne (mappedBy = "veicoli")
+    private Macchina macchina;
+    @OneToOne (mappedBy = "veicoli")
+    private Moto moto;
 }

@@ -22,6 +22,8 @@ import com.betacom.pv.repository.IVeicoloRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.betacom.pv.utils.Validazione;
+
+import jakarta.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -32,6 +34,7 @@ public class MacchinaImpl implements IMacchinaService {
     private final Validazione valida;
 
     @Override
+    @Transactional
     public void create(MacchinaReq req) {
 
         valida.validaTargaMacchina(req.getTarga());
@@ -40,7 +43,7 @@ public class MacchinaImpl implements IMacchinaService {
         valida.validaCc(req.getCc());
         valida.validaAnno(req.getAnnoProduzione());
 
-        TipoVeicolo tipo = valida.validaTipoVeicolo(req.getTipoVeicolo());
+        TipoVeicolo tipo = valida.validaTipoVeicolo("macchina");
         TipoAlimentazione alim = valida.validaAlimentazione(req.getAlimentazione(), tipo.getTipo());
         CategoriaVeicolo cat = valida.validaCategoria(req.getCategoria(), tipo.getTipo());
 
@@ -66,6 +69,7 @@ public class MacchinaImpl implements IMacchinaService {
     }
 
     @Override
+    @Transactional
     public void update(MacchinaReq req) {
         Macchina m = maccR.findById(req.getId())
                 .orElseThrow(() -> new AcademyException("Macchina non trovata"));
@@ -99,11 +103,10 @@ public class MacchinaImpl implements IMacchinaService {
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
-
-        Macchina m = maccR.findById(id)
+    	Macchina m = maccR.findById(id)
                 .orElseThrow(() -> new AcademyException("Macchina non trovata"));
-
         maccR.delete(m);
         veicR.delete(m.getVeicoli());
     }

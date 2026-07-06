@@ -8,4 +8,6 @@ import com.betacom.pv.models.CategoriaVeicolo;
 
 public interface ICategoriaVeicoloRepository extends JpaRepository<CategoriaVeicolo, Integer>{
 	Optional<CategoriaVeicolo> findByDescrizioneAndTipoVeicolo_Tipo(String descrizione, String tipoVeicolo);
+
+	boolean existsByTipoVeicolo_Tipo(String tipo);
 }

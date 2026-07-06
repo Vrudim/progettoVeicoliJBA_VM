@@ -10,8 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class VeicoliReq {
-    @NotNull(groups = ValidationGroups.Create.class, message = "veicoli.no.tipoVeicolo")
-    @NotBlank(groups = ValidationGroups.Create.class, message = "veicoli.no.tipoVeicolo")
     private String tipoVeicolo;
 
     @NotBlank(groups = ValidationGroups.Create.class, message = "veicoli.no.alimentazione")

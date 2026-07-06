@@ -8,5 +8,6 @@ import com.betacom.pv.dto.output.AlimentazioneDTO;
 public interface ITipoAlimentazioneService {
 	void create(AlimentazioneReq req) throws Exception;
 	List<AlimentazioneDTO> getAll() throws Exception;
+	void delete(Integer id) throws Exception;
 
 }

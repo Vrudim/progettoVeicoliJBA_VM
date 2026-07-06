@@ -6,4 +6,7 @@ import com.betacom.pv.models.Bici;
 
 public interface IBiciRepository extends JpaRepository<Bici, Integer>{
 
+    boolean existsByTipoSospensione_Descrizione(String descrizione);
+
+    boolean existsByTipoFreno_Descrizione(String descrizione);
 }

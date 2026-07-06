@@ -8,4 +8,5 @@ import com.betacom.pv.dto.output.TipoDTO;
 public interface ITipoVeicoloService {
 	void create(TipoVeicoloReq req) throws Exception;
 	List<TipoDTO> getAll() throws Exception;
+	void delete(String tipo) throws Exception;
 }

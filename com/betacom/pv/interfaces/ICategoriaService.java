@@ -8,4 +8,5 @@ import com.betacom.pv.dto.output.CategoriaVeicoliDTO;
 public interface ICategoriaService {
 	void create(CategoriaVeicoliReq req) throws Exception;
 	List<CategoriaVeicoliDTO> getAll() throws Exception;
+	void delete(Integer id) throws Exception;
 }

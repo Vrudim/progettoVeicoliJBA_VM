@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.betacom.pv.dto.input.AlimentazioneReq;
 import com.betacom.pv.dto.output.AlimentazioneDTO;
+import com.betacom.pv.exceptions.AcademyException;
+import com.betacom.pv.interfaces.IMessaggiServices;
 import com.betacom.pv.interfaces.ITipoAlimentazioneService;
 import com.betacom.pv.mapping.AlimentazioneMapper;
 import com.betacom.pv.models.TipoAlimentazione;
@@ -13,6 +15,7 @@ import com.betacom.pv.models.TipoVeicolo;
 import com.betacom.pv.repository.ITipoAlimentazioneRepository;
 import com.betacom.pv.utils.Validazione;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,8 +26,10 @@ public class AlimentazioneImpl implements ITipoAlimentazioneService{
 
 	private final ITipoAlimentazioneRepository alimR;
     private final Validazione valida;
+    private final IMessaggiServices msgS;
 	
 	@Override
+	@Transactional
 	public void create(AlimentazioneReq req) throws Exception {
         TipoVeicolo tipo = valida.validaTipoVeicolo(req.getTipo());
         TipoAlimentazione a = new TipoAlimentazione();
@@ -41,5 +46,12 @@ public class AlimentazioneImpl implements ITipoAlimentazioneService{
                 .toList();
 	}
 
-
+	@Override
+    @Transactional
+    public void delete(Integer id) {
+		TipoAlimentazione a = alimR.findById(id)
+                .orElseThrow(() -> new AcademyException(msgS.get("alim.no.present")));
+		valida.checkAlim(a);
+		alimR.delete(a);
+    }
 }

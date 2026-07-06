@@ -13,4 +13,12 @@ public class VeicoliMapper {
         dto.setAlimentazione(v.getAlimentazione() != null ? v.getAlimentazione().getDescrizione() : null);
         dto.setCategoria(v.getCategoria() != null ? v.getCategoria().getDescrizione() : null);
     }
+	
+	public static VeicoliDTO toDTO(Veicoli v) {
+	    VeicoliDTO dto = new VeicoliDTO();
+		if(v.getBici()!=null) return BiciMapper.toDTO(v.getBici());
+		if(v.getMoto()!=null) return MotoMapper.toDTO(v.getMoto());
+		if(v.getMacchina()!=null) return MacchinaMapper.toDTO(v.getMacchina());
+	    return dto;
+	}
 }

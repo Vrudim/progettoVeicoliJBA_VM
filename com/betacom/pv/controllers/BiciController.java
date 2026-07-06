@@ -42,14 +42,12 @@ public class BiciController {
         biciS.update(req);
         return ResponseEntity.ok(ResponseDTO.builder().msg("updated...").build());
     }
-
+    
     @DeleteMapping("delete/{id}")
     public ResponseEntity<ResponseDTO> delete(@PathVariable Integer id) throws Exception {
-        biciS.delete(id);
+    	biciS.delete(id);
         return ResponseEntity.ok(ResponseDTO.builder().msg("deleted...").build());
-
     }
-
     @GetMapping("getById")
     public ResponseEntity<Object> getById(@RequestParam Integer id) throws Exception {
 

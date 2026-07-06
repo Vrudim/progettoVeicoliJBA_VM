@@ -21,6 +21,8 @@ import com.betacom.pv.repository.IVeicoloRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.betacom.pv.utils.Validazione;
+
+import jakarta.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -31,6 +33,7 @@ public class MotoImpl implements IMotoService {
     private final Validazione valida;
 
     @Override
+    @Transactional
     public void create(MotoReq req) {
 
         valida.validaTargaMoto(req.getTarga());
@@ -38,7 +41,7 @@ public class MotoImpl implements IMotoService {
         valida.validaCc(req.getCc());
         valida.validaAnno(req.getAnnoProduzione());
 
-        TipoVeicolo tipo = valida.validaTipoVeicolo(req.getTipoVeicolo());
+        TipoVeicolo tipo = valida.validaTipoVeicolo("moto");
         TipoAlimentazione alim = valida.validaAlimentazione(req.getAlimentazione(), tipo.getTipo());
         CategoriaVeicolo cat = valida.validaCategoria(req.getCategoria(), tipo.getTipo());
 
@@ -63,6 +66,7 @@ public class MotoImpl implements IMotoService {
     }
 
     @Override
+    @Transactional
     public void update(MotoReq req) {
     	Moto m = motoR.findById(req.getId())
                 .orElseThrow(() -> new AcademyException("Moto non trovata"));
@@ -96,6 +100,7 @@ public class MotoImpl implements IMotoService {
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
         Moto m = motoR.findById(id)
                 .orElseThrow(() -> new AcademyException("Moto non trovata"));
